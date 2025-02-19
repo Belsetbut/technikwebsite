@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Calendar from "./components/Calendar";
+import { ModeToggle } from "./components/WhiteDarkMode";
 
 export default function Home() {
   return (
@@ -16,14 +17,7 @@ export default function Home() {
             className="object-contain"
             priority
           />
-          <button
-            className="p-2 rounded-full hover:bg-blue-200/60 text-gray-700 transition-colors"
-            onClick={() => document.documentElement.classList.toggle('dark')}
-            aria-label="Toggle theme"
-          >
-            <span className="text-xl">🌞</span>
-            <span className="hidden dark:inline">🌜</span>
-          </button>
+          <ModeToggle/>
         </div>
       </header>
 
