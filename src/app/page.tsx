@@ -7,14 +7,14 @@ import { ModeToggle } from "./components/WhiteDarkMode";
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-      <header className="w-full border-b border-gray-200 bg-blue-100 opacity-95 shadow-sm lg:h-auto fixed">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <header className="w-full border-b border-gray-200 bg-blue-100 opacity-95 shadow-sm lg:h-auto fixed z-10">
+        <div className="container mx-auto px-4 py-2 sm:py-4 flex items-center justify-between">
           <Image
             src="/logo.png"
             alt="Company Logo"
             width={340}
             height={50}
-            className="object-contain"
+            className="w-[200px] sm:w-[260px] md:w-[340px] h-auto object-contain"
             priority
           />
           <ModeToggle />

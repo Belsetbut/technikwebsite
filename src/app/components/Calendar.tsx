@@ -153,17 +153,17 @@ export default function Calendar() {
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-6">
-      <div className="mb-8 border border-gray-100 rounded-lg shadow-lg p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">Kalender</h2>
-          <div className="flex items-center space-x-4">
+    <div className="w-full max-w-6xl mx-auto p-2 sm:p-4 md:p-6">
+      <div className="mb-4 sm:mb-6 md:mb-8 border border-gray-100 rounded-lg shadow-lg p-3 sm:p-4 md:p-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Kalender</h2>
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <button
               onClick={() => navigateMonth("prev")}
               className="p-2 rounded-full hover:bg-blue-200/60 text-gray-700">
               ←
             </button>
-            <span className="text-lg font-medium text-gray-700">
+            <span className="text-base sm:text-lg font-medium text-gray-700">
               {currentDate.toLocaleString("de-DE", {
                 month: "long",
                 year: "numeric",
@@ -177,11 +177,11 @@ export default function Calendar() {
           </div>
         </div>
 
-        <div className="grid grid-cols-7 gap-1">
+        <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
           {weekDays.map((day) => (
             <div
               key={day}
-              className="text-center font-medium text-gray-700 p-2 bg-blue-400/40">
+              className="text-center font-medium text-gray-700 p-1 sm:p-2 bg-blue-400/40 text-xs sm:text-sm">
               {day}
             </div>
           ))}
@@ -222,7 +222,7 @@ export default function Calendar() {
               required
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Start Time
