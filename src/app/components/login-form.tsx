@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 export function LoginForm({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) { 
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,20 +25,39 @@ export function LoginForm({
     setLoading(true);
     setError(null);
 
+    if (!email || !password) {
+      setError("Please enter both email and password");
+      setLoading(false);
+      return;
+    }
+
     try {
+      console.log("Attempting login...");
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) throw error;
+      console.log("Login response:", { data, error });
 
-      if (data.user) {
-        router.push('/dashboard'); // Redirect to dashboard after successful login
-        router.refresh(); // Refresh the page to update auth state
+      if (error) {
+        console.error("Login error:", error);
+        throw error;
+      }
+
+      if (data?.user) {
+        console.log("Login successful, redirecting...");
+        router.replace("/dashboard");
+        return;
+      } else {
+        console.error("No user data received");
+        setError("Login failed. Please try again.");
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Invalid login credentials");
+      console.error("Login error:", error);
+      setError(
+        error instanceof Error ? error.message : "Invalid login credentials"
+      );
     } finally {
       setLoading(false);
     }

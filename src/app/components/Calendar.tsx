@@ -13,7 +13,7 @@ interface Event {
   additionalInfo: string;
 }
 
-export default function Calendar() {
+export default function Calendar({ showEventForm = false }) {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -24,7 +24,6 @@ export default function Calendar() {
     endTime: "",
     additionalInfo: "",
   });
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newEvent: Event = {
@@ -40,7 +39,6 @@ export default function Calendar() {
       additionalInfo: "",
     });
   };
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -50,19 +48,16 @@ export default function Calendar() {
       [name]: value,
     }));
   };
-
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
     return new Date(year, month + 1, 0).getDate();
   };
-
   const getFirstDayOfMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
     return new Date(year, month, 1).getDay();
   };
-
   const navigateMonth = (direction: "prev" | "next") => {
     setCurrentDate((prev) => {
       const newDate = new Date(prev);
@@ -74,7 +69,6 @@ export default function Calendar() {
       return newDate;
     });
   };
-
   const renderCalendarDays = () => {
     const daysInMonth = getDaysInMonth(currentDate);
     const firstDayOfMonth = getFirstDayOfMonth(currentDate);
@@ -149,9 +143,7 @@ export default function Calendar() {
 
     return days;
   };
-
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
   return (
     <div className="w-full max-w-6xl mx-auto p-2 sm:p-4 md:p-6">
       <div className="mb-4 sm:mb-6 md:mb-8 border border-gray-100 rounded-lg shadow-lg p-3 sm:p-4 md:p-6">
@@ -188,124 +180,127 @@ export default function Calendar() {
           {renderCalendarDays()}
         </div>
       </div>
-
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6 border border-gray-100">
-        <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
-          Add New Event
-        </h3>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Event Title
-            </label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
-              required
-            />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Start Time
-              </label>
-              <input
-                type="datetime-local"
-                name="startTime"
-                value={formData.startTime}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                End Time
-              </label>
-              <input
-                type="datetime-local"
-                name="endTime"
-                value={formData.endTime}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
-                required
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Additional Information
-            </label>
-            <textarea
-              name="additionalInfo"
-              value={formData.additionalInfo}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white h-32"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors">
-            Add Event
-          </button>
+      {showEventForm && (
+<>
+  <form
+    onSubmit={handleSubmit}
+    className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6 border border-gray-100">
+    <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
+      Add New Event
+    </h3>
+    <div className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Email
+        </label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Event Title
+        </label>
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
+          required
+        />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Start Time
+          </label>
+          <input
+            type="datetime-local"
+            name="startTime"
+            value={formData.startTime}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
+            required
+          />
         </div>
-      </form>
-
-      <AnimatePresence>
-        {selectedEvent && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedEvent(null)}>
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-lg p-6 max-w-md w-full"
-              onClick={(e) => e.stopPropagation()}>
-              <h3 className="text-xl font-bold mb-2">{selectedEvent.title}</h3>
-              <p className="text-gray-600 mb-2">
-                <span className="font-medium">Time:</span>{" "}
-                {selectedEvent.startTime} - {selectedEvent.endTime}
-              </p>
-              <p className="text-gray-600 mb-4">
-              </p>
-              {selectedEvent.additionalInfo && (
-                <div className="border-t pt-4">
-                  <p className="text-gray-700">
-                    {selectedEvent.additionalInfo}
-                  </p>
-                </div>
-              )}
-              <button
-                onClick={() => setSelectedEvent(null)}
-                className="mt-4 w-full bg-gray-100 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-200 transition-colors">
-                Close
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            End Time
+          </label>
+          <input
+            type="datetime-local"
+            name="endTime"
+            value={formData.endTime}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
+            required
+          />
+        </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Additional Information
+        </label>
+        <textarea
+          name="additionalInfo"
+          value={formData.additionalInfo}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white h-32"
+        />
+      </div>
+      <button
+        type="submit"
+        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors">
+        Add Event
+      </button>
     </div>
+  </form>
+
+  <AnimatePresence>
+    {selectedEvent && (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
+        onClick={() => setSelectedEvent(null)}>
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          className="bg-white rounded-lg p-6 max-w-md w-full"
+          onClick={(e) => e.stopPropagation()}>
+          <h3 className="text-xl font-bold mb-2">{selectedEvent.title}</h3>
+          <p className="text-gray-600 mb-2">
+            <span className="font-medium">Time:</span>{" "}
+            {selectedEvent.startTime} - {selectedEvent.endTime}
+          </p>
+          <p className="text-gray-600 mb-4">
+          </p>
+          {selectedEvent.additionalInfo && (
+            <div className="border-t pt-4">
+              <p className="text-gray-700">
+                {selectedEvent.additionalInfo}
+              </p>
+            </div>
+          )}
+          <button
+            onClick={() => setSelectedEvent(null)}
+            className="mt-4 w-full bg-gray-100 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-200 transition-colors">
+            Close
+          </button>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</>
+      )}
+      </div>
   );
 }
